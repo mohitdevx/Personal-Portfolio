@@ -1,75 +1,102 @@
-# React + TypeScript + Vite
+# Personal Portfolio | Mohit Kumar (`mohitdevx`)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A craft-focused, high-performance personal developer portfolio engineered with React 19, TypeScript, Tailwind CSS v4, and Vite. Designed with an editorial, human-first aesthetic that emphasizes systems engineering, cybersecurity principles, and full-stack development.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+- **🛸 Floating Island Command Dock**: Centered floating capsule navbar featuring live telemetry indicator, real-time scroll spy highlighting active sections, and a tactile dark/light mode toggle.
+- **📊 Live GitHub Activity Matrix**: Synced with the GitHub Contributions API (`@mohitdevx`) accompanied by an ambient canvas laser tracer and continuous vertical activity ticker with pause-on-hover.
+- **⚡ Dual-Direction Tech Marquee**: Infinite-scrolling marquee presenting languages, frameworks, and DevOps tools with official brand vectors from `react-icons`.
+- **💼 Editorial Case Studies**: Human-centered project breakdowns focusing on real architecture decisions, Redis message queues, Docker environments, and security monitoring.
+- **🌓 Reactive Theme Engine**: Smooth, synchronized CSS variable architecture supporting both deep graphite dark mode (`#09090b`) and crisp light mode (`#fafafa`) with persistent `localStorage` sync.
+- **📱 Responsive & Clean Layout**: Constrained to an optimal reading width (`max-w-3xl`) with zero visible browser scrollbars (`.no-scrollbar`).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Core**: [React 19](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Icons**: [Remix Icon](https://remixicon.com/), [React Icons (Simple Icons & VS Code)](https://react-icons.github.io/react-icons/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📂 Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+├── components/
+│   ├── Button.tsx              # Reusable interactive button & link component
+│   ├── ContributionShooter.tsx # Canvas laser particle tracer & activity matrix
+│   ├── Footer.tsx              # Dynamic year & social links footer
+│   ├── Navbar.tsx              # Floating island command dock with scroll spy
+│   └── SectionHeader.tsx       # Centered glowing divider line & section header
+├── pages/
+│   ├── About.tsx               # Narrative bio & engineering philosophy
+│   ├── Contributions.tsx       # Live GitHub contribution matrix & activity stream
+│   ├── Projects.tsx            # Engineering case studies & project links
+│   └── TechStack.tsx           # Dual-row continuous running tech marquee
+├── App.tsx                     # Primary layout orchestration
+├── index.css                   # Tailwind v4 theme variables, animations & masks
+└── main.tsx                    # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
 
+- **Node.js**: v18.0.0 or higher
+- **pnpm**: v9.0.0 or higher (recommended)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/mohitdevx/Personal-Portfolio.git
+
+# Navigate to project directory
+cd Personal-Portfolio
+
+# Install dependencies
+pnpm install
 ```
+
+### Development
+
+```bash
+# Start local development server with HMR
+pnpm run dev
+```
+
+### Build & Lint
+
+```bash
+# Run ESLint validation
+pnpm run lint
+
+# Compile TypeScript and build production bundle
+pnpm run build
+
+# Preview production build locally
+pnpm run preview
+```
+
+---
+
+## 👤 Author
+
+**Mohit Kumar**
+- GitHub: [@mohitdevx](https://github.com/mohitdevx)
+- LinkedIn: [in/mohitdevx](https://linkedin.com/in/mohitdevx)
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
