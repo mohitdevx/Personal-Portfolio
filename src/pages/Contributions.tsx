@@ -235,21 +235,18 @@ const Contributions = () => {
         loading={loading}
       />
 
-      {/* 2. Compact Running Scrolling Recent Activity */}
-      <div className="p-4 rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02]">
+      {/* 2. Borderless Running Scrolling Recent Activity */}
+      <div className="mt-8 pt-4 border-t border-black/[0.04] dark:border-white/[0.04]">
         <div className="flex items-center justify-between mb-2.5 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-            <span className="font-semibold text-light-main dark:text-main">
-              Recent Activity
-            </span>
-          </div>
-          <span className="text-[10px] text-light-muted dark:text-muted">
+          <span className="font-semibold text-light-main dark:text-main">
+            Activity Stream
+          </span>
+          <span className="text-[10px] text-light-muted dark:text-muted font-mono">
             Hover to pause
           </span>
         </div>
 
-        {/* Small Container with Top & Bottom Mask Blur Fade */}
+        {/* Borderless Container with Top & Bottom Mask Blur Fade */}
         <div className="relative h-[125px] overflow-hidden mask-fade-y">
           {loading && events.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xs text-light-muted dark:text-muted">
@@ -260,14 +257,14 @@ const Contributions = () => {
               No recent activity.
             </div>
           ) : (
-            <div className="animate-vertical-scroll space-y-1.5 py-1 cursor-default">
+            <div className="animate-vertical-scroll space-y-1 py-1 cursor-default">
               {/* Loop list twice for seamless infinite marquee scroll */}
               {[...events, ...events].map((event, idx) => {
                 const repoUrl = `https://github.com/${event.repo.name}`;
                 return (
                   <div
                     key={`${event.id}-${idx}`}
-                    className="p-2 rounded-xl bg-black/[0.015] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.05] flex items-center justify-between gap-3 text-xs transition-colors"
+                    className="px-2.5 py-1.5 rounded-lg hover:bg-black/[0.03] dark:hover:bg-white/[0.03] flex items-center justify-between gap-3 text-xs transition-colors"
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />

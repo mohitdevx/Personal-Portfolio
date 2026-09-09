@@ -45,7 +45,7 @@ const ContributionShooter = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Animation refs
-  const shipXRef = useRef(100);
+  const shipXRef = useRef(120);
   const dirRef = useRef(1);
   const bulletsRef = useRef<Bullet[]>([]);
   const particlesRef = useRef<Particle[]>([]);
@@ -72,31 +72,34 @@ const ContributionShooter = ({
       const shipY = canvas.height - 8;
 
       // Patrol movement
-      shipXRef.current += dirRef.current * 1.4;
+      shipXRef.current += dirRef.current * 1.5;
       if (shipXRef.current > canvas.width - 30) {
         dirRef.current = -1;
       } else if (shipXRef.current < 30) {
         dirRef.current = 1;
       }
 
-      // Fire subtle laser every ~450ms
-      if (timestamp - lastShotRef.current > 450) {
+      // Fire glowing laser pulse every ~420ms
+      if (timestamp - lastShotRef.current > 420) {
         bulletsRef.current.push({
           x: shipXRef.current,
           y: shipY - 6,
-          speed: 4.5,
+          speed: 4.8,
         });
         lastShotRef.current = timestamp;
       }
 
-      // Update & Render Bullets
-      ctx.fillStyle = '#10b981';
+      // Render glowing lasers with blur
+      ctx.shadowColor = '#10b981';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = '#34d399';
+
       const activeBullets: Bullet[] = [];
       bulletsRef.current.forEach((b) => {
         b.y -= b.speed;
-        ctx.fillRect(b.x - 0.75, b.y - 3, 1.5, 5);
+        ctx.fillRect(b.x - 0.75, b.y - 3, 1.5, 6);
 
-        // Check impact with grid
+        // Check impact with grid cells
         const gridLeft = 24;
         const gridTop = 16;
         const cellStep = 12.5;
@@ -113,10 +116,10 @@ const ContributionShooter = ({
           ) {
             const day = weeks[col][row];
             if (day && day.count > 0) {
-              // Hit an active commit square - spawn small subtle spark
-              for (let i = 0; i < 4; i++) {
+              // Glowing particle burst
+              for (let i = 0; i < 5; i++) {
                 const angle = Math.random() * Math.PI * 2;
-                const spd = Math.random() * 1.5 + 0.5;
+                const spd = Math.random() * 1.8 + 0.6;
                 particlesRef.current.push({
                   x: b.x,
                   y: b.y,
@@ -125,7 +128,7 @@ const ContributionShooter = ({
                   alpha: 1,
                 });
               }
-              return; // Bullet consumed
+              return; // Consumed
             }
           }
         }
@@ -136,24 +139,26 @@ const ContributionShooter = ({
       });
       bulletsRef.current = activeBullets;
 
-      // Update & Render Particle Sparks
+      // Render glowing particles
+      ctx.shadowBlur = 6;
       const activeParticles: Particle[] = [];
       particlesRef.current.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.alpha -= 0.05;
+        p.alpha -= 0.045;
         if (p.alpha > 0) {
-          ctx.fillStyle = `rgba(16, 185, 129, ${p.alpha})`;
-          ctx.fillRect(p.x - 0.5, p.y - 0.5, 1.5, 1.5);
+          ctx.fillStyle = `rgba(52, 211, 153, ${p.alpha})`;
+          ctx.fillRect(p.x - 0.75, p.y - 0.75, 1.5, 1.5);
           activeParticles.push(p);
         }
       });
       particlesRef.current = activeParticles;
 
-      // Render Minimalist Ambient Ship Cannon
+      // Render glowing ambient ship tracer
       const sx = shipXRef.current;
       const sy = shipY;
 
+      ctx.shadowBlur = 8;
       ctx.fillStyle = '#10b981';
       // Ship nose
       ctx.beginPath();
@@ -171,6 +176,9 @@ const ContributionShooter = ({
       ctx.fillRect(sx - 4.5, sy - 2, 1, 4);
       ctx.fillRect(sx + 3.5, sy - 2, 1, 4);
 
+      // Glow reset for next frame
+      ctx.shadowBlur = 0;
+
       animId = requestAnimationFrame(loop);
     };
 
@@ -182,27 +190,24 @@ const ContributionShooter = ({
   }, [weeks]);
 
   return (
-    <div
-      ref={containerRef}
-      className="p-4 sm:p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] mb-6"
-    >
+    <div ref={containerRef} className="mb-6">
       {/* Header Info */}
       <div className="flex items-center justify-between mb-3 text-xs">
         <span className="font-semibold text-light-main dark:text-main">
-          Contributions
+          Activity Matrix
         </span>
-        <span className="text-light-muted dark:text-muted text-[11px]">
+        <span className="text-light-muted dark:text-muted text-[11px] font-mono">
           {hoveredDay && hoveredDay.count >= 0
             ? `${hoveredDay.count} commit${hoveredDay.count === 1 ? '' : 's'} on ${formatDate(hoveredDay.date)}`
             : `${totalContributions} commits in past year`}
         </span>
       </div>
 
-      {/* Heatmap with no ugly scrollbars */}
-      <div className="relative overflow-x-auto no-scrollbar pb-1">
+      {/* Borderless Heatmap with mask fade & no scrollbars */}
+      <div className="relative overflow-x-auto no-scrollbar mask-fade-x pb-1">
         <div className="relative min-w-[660px]">
           {/* Month labels */}
-          <div className="flex text-[9px] text-light-muted dark:text-muted mb-1 h-3.5 pl-6">
+          <div className="flex text-[9px] text-light-muted dark:text-muted mb-1.5 h-3.5 pl-6">
             {weeks.map((_, wIdx) => {
               const label = getMonthLabel(wIdx);
               return (
@@ -259,7 +264,7 @@ const ContributionShooter = ({
               </div>
             </div>
 
-            {/* Ambient Shooter Canvas Overlay (pointer-events-none so tooltips work smoothly) */}
+            {/* Glowing Ambient Tracer Canvas */}
             <canvas
               ref={canvasRef}
               className="absolute top-0 left-0 w-full h-[118px] pointer-events-none z-10"
