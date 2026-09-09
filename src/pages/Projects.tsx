@@ -1,53 +1,44 @@
 type Project = {
   title: string;
-  category: string;
-  description: string;
-  tags: string[];
+  year: string;
+  summary: string;
+  stack: string[];
   githubUrl: string;
   liveUrl?: string;
-  icon: string;
 };
 
 const PROJECTS: Project[] = [
   {
     title: 'LumiStream',
-    category: 'Full Stack & Telemetry',
-    description:
-      'High-throughput distributed event streaming platform built with Redis pub/sub, Dockerized worker microservices, and real-time visualization.',
-    tags: ['TypeScript', 'Node.js', 'Redis', 'Docker', 'Tailwind CSS'],
+    year: '2026',
+    summary:
+      'A real-time telemetry pipeline built to test how Redis pub/sub handles high write volumes without dropping messages. Uses Dockerized worker services to ingest and broadcast event streams with minimal latency.',
+    stack: ['TypeScript', 'Node.js', 'Redis', 'Docker'],
     githubUrl: 'https://github.com/mohitdevx/lumistream',
-    liveUrl: '#',
-    icon: 'ri-radar-line',
   },
   {
-    title: 'Sentinel SOC',
-    category: 'Cybersecurity',
-    description:
-      'Threat hunting and vulnerability monitoring system. Implements automated CVE alerts, container auditing, and zero-trust authentication policies.',
-    tags: ['Python', 'React', 'Docker', 'PostgreSQL', 'Linux'],
+    title: 'SOC System',
+    year: '2026',
+    summary:
+      'A security monitoring dashboard I built to track vulnerabilities across my own containerized environments. It aggregates CVE advisory feeds, monitors open network ports, and flags misconfigurations before deployment.',
+    stack: ['Python', 'React', 'Docker', 'PostgreSQL'],
     githubUrl: 'https://github.com/mohitdevx/soc-system',
-    liveUrl: '#',
-    icon: 'ri-shield-keyhole-line',
   },
   {
-    title: 'Neural RAG',
-    category: 'AI & Systems',
-    description:
-      'Enterprise semantic search knowledge engine with multi-tenant vector storage, cryptographic credential isolation, and clean RESTful endpoints.',
-    tags: ['Python', 'FastAPI', 'React', 'MongoDB', 'Prisma'],
+    title: 'RAG Chatbot',
+    year: '2026',
+    summary:
+      'An experiment with retrieval-augmented generation to search and chat with local technical documentation. Focuses on data privacy, local vector embeddings, and token-based authentication on the API layer.',
+    stack: ['Python', 'FastAPI', 'React', 'MongoDB'],
     githubUrl: 'https://github.com/mohitdevx/RAG-Chatbot',
-    liveUrl: '#',
-    icon: 'ri-brain-line',
   },
   {
-    title: 'VaultGate',
-    category: 'DevOps & Infrastructure',
-    description:
-      'Zero-trust API reverse proxy featuring distributed token-bucket rate limiting, TLS certificate automation, and granular security audit trails.',
-    tags: ['Golang', 'Docker', 'Redis', 'PostgreSQL', 'Bash'],
+    title: 'API Rate Limiter & Gateway',
+    year: '2025',
+    summary:
+      'A lightweight reverse proxy written in Go to dive deeper into networking and rate-limiting algorithms. Implements a distributed token-bucket strategy with Redis to protect upstream endpoints from burst traffic.',
+    stack: ['Golang', 'Redis', 'Docker', 'Bash'],
     githubUrl: 'https://github.com/mohitdevx',
-    liveUrl: '#',
-    icon: 'ri-server-line',
   },
 ];
 
@@ -57,75 +48,42 @@ const Projects = () => {
       id="work"
       className="scroll-mt-24 max-w-3xl mx-auto px-6 sm:px-8 py-8 sm:py-12 font-poppins"
     >
-      {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-light-main dark:text-main">
-            Featured Projects
-          </h2>
-          <p className="mt-1 text-xs sm:text-sm text-light-muted dark:text-muted">
-            Production-grade systems, developer tools, and security-focused applications.
-          </p>
-        </div>
-        <span className="text-[11px] text-light-muted dark:text-muted font-mono">
-          4 projects
+      {/* Section Header */}
+      <div className="mb-6 flex items-baseline justify-between">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-light-main dark:text-main">
+          Projects
+        </h2>
+        <span className="text-xs text-light-muted dark:text-muted">
+          Things I&apos;ve built
         </span>
       </div>
 
-      {/* Projects 2-Column Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+      {/* Editorial Project List */}
+      <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
         {PROJECTS.map((project) => (
-          <div
+          <article
             key={project.title}
-            className="group p-4 sm:p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] hover:border-secondary/40 dark:hover:border-secondary/40 hover:bg-black/[0.035] dark:hover:bg-white/[0.035] transition-all duration-200 flex flex-col justify-between"
+            className="group py-5 first:pt-0 last:pb-0 transition-all"
           >
-            <div>
-              {/* Card Top: Icon & Category */}
-              <div className="flex items-center justify-between mb-3">
-                <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-secondary/10 text-secondary border border-secondary/20 group-hover:scale-105 transition-transform">
-                  <i className={`${project.icon} text-base`} />
-                </span>
-                <span className="text-[10px] font-medium tracking-wide uppercase px-2.5 py-0.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] text-light-muted dark:text-muted">
-                  {project.category}
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4 mb-2">
+              <div className="flex items-baseline gap-2.5">
+                <h3 className="text-base font-semibold text-light-main dark:text-main group-hover:text-secondary transition-colors">
+                  {project.title}
+                </h3>
+                <span className="text-xs text-light-muted dark:text-muted font-mono">
+                  {project.year}
                 </span>
               </div>
 
-              {/* Title & Arrow */}
-              <h3 className="text-base font-semibold text-light-main dark:text-main flex items-center gap-1 group-hover:text-secondary transition-colors">
-                <span>{project.title}</span>
-                <i className="ri-arrow-right-up-line text-sm text-light-muted dark:text-muted group-hover:text-secondary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </h3>
-
-              {/* Description */}
-              <p className="mt-2 text-xs sm:text-sm text-light-muted dark:text-muted leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-
-            {/* Bottom: Tags & Action Links */}
-            <div className="mt-5 pt-3.5 border-t border-black/[0.04] dark:border-white/[0.04] space-y-3">
-              {/* Tech Tags */}
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/[0.025] dark:bg-white/[0.03] text-light-muted dark:text-muted border border-black/[0.04] dark:border-white/[0.04]"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Action Links */}
-              <div className="flex items-center gap-4 text-xs font-medium">
+              <div className="flex items-center gap-3 text-xs">
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-light-muted dark:text-muted hover:text-secondary transition-colors"
                 >
-                  <i className="ri-github-line text-sm" />
-                  <span>Source</span>
+                  <span>Code</span>
+                  <i className="ri-arrow-right-up-line text-xs" />
                 </a>
                 {project.liveUrl && (
                   <a
@@ -134,13 +92,29 @@ const Projects = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-light-muted dark:text-muted hover:text-secondary transition-colors"
                   >
-                    <i className="ri-external-link-line text-sm" />
-                    <span>Live Demo</span>
+                    <span>Demo</span>
+                    <i className="ri-arrow-right-up-line text-xs" />
                   </a>
                 )}
               </div>
             </div>
-          </div>
+
+            <p className="text-xs sm:text-sm text-light-muted dark:text-muted leading-relaxed mb-3">
+              {project.summary}
+            </p>
+
+            {/* Stack Tags */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-black/[0.025] dark:bg-white/[0.03] text-light-muted dark:text-muted border border-black/[0.04] dark:border-white/[0.04]"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </article>
         ))}
       </div>
     </section>

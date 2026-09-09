@@ -3,6 +3,7 @@ import About from "./pages/About"
 import Projects from "./pages/Projects"
 import Contributions from "./pages/Contributions"
 import TechStack from "./pages/TechStack"
+import Footer from "./components/Footer"
 
 const App = () => {
     return (
@@ -10,10 +11,11 @@ const App = () => {
             <Navbar />
             <main>
                 <About />
+                <Projects />
                 <Contributions />
                 <TechStack />
-                <Projects />
             </main>
+            <Footer />
         </>
     )
 }
