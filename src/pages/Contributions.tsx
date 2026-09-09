@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ContributionShooter from '../components/ContributionShooter';
+import SectionHeader from '../components/SectionHeader';
 
 type ContributionDay = {
   date: string;
@@ -205,21 +206,22 @@ const Contributions = () => {
       id="contributions"
       className="max-w-3xl mx-auto px-6 sm:px-8 py-8 sm:py-12 font-poppins"
     >
-      {/* Title */}
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-light-main dark:text-main">
-          Contributions
-        </h2>
-        <a
-          href="https://github.com/mohitdevx"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-light-muted dark:text-muted hover:text-secondary flex items-center gap-1 transition-colors"
-        >
-          <span>github.com/mohitdevx</span>
-          <i className="ri-arrow-right-up-line text-[10px]" />
-        </a>
-      </div>
+      {/* Section Header */}
+      <SectionHeader
+        title="Contributions"
+        description="Live telemetry and open source commits synced directly with GitHub."
+        action={
+          <a
+            href="https://github.com/mohitdevx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-light-muted dark:text-muted hover:text-secondary flex items-center gap-1 transition-colors"
+          >
+            <span>github.com/mohitdevx</span>
+            <i className="ri-arrow-right-up-line text-[10px]" />
+          </a>
+        }
+      />
 
       {/* 1. Compact Contribution Graph with Ambient Shooter */}
       <ContributionShooter

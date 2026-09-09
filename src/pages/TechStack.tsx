@@ -1,4 +1,5 @@
 import type { IconType } from 'react-icons';
+import SectionHeader from '../components/SectionHeader';
 import {
   SiPython,
   SiCplusplus,
@@ -57,20 +58,12 @@ const TechStack = () => {
       id="tech-stack"
       className="max-w-3xl mx-auto px-6 sm:px-8 py-8 sm:py-12 font-poppins"
     >
-      {/* Title */}
-      <div className="mb-5 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-light-main dark:text-main">
-            Tech Stack
-          </h2>
-          <p className="mt-0.5 text-xs sm:text-sm text-light-muted dark:text-muted">
-            Tools, languages, and technologies I use to build robust software.
-          </p>
-        </div>
-        <span className="text-[10px] text-light-muted dark:text-muted hidden sm:inline-block">
-          Hover to pause
-        </span>
-      </div>
+      {/* Section Header */}
+      <SectionHeader
+        title="Tech Stack"
+        description="Tools, languages, and technologies I use to build robust software."
+        badge="Hover to pause"
+      />
 
       {/* Marquee Wrapper with horizontal mask fade */}
       <div className="overflow-hidden mask-fade-x space-y-2.5 py-1">

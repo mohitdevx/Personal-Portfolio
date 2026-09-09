@@ -1,3 +1,5 @@
+import SectionHeader from '../components/SectionHeader';
+
 type Project = {
   title: string;
   year: string;
@@ -48,15 +50,11 @@ const Projects = () => {
       id="work"
       className="scroll-mt-24 max-w-3xl mx-auto px-6 sm:px-8 py-8 sm:py-12 font-poppins"
     >
-      {/* Section Header */}
-      <div className="mb-6 flex items-baseline justify-between">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-light-main dark:text-main">
-          Projects
-        </h2>
-        <span className="text-xs text-light-muted dark:text-muted">
-          Things I&apos;ve built
-        </span>
-      </div>
+      <SectionHeader
+        title="Projects"
+        description="Production-grade systems, developer tools, and security-focused applications."
+        badge="4 projects"
+      />
 
       {/* Editorial Project List */}
       <div className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
