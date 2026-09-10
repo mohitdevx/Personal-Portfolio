@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Left Wing Gradient: Platinum / Titanium White -->
+    <linearGradient id="dark-left-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="65%" stop-color="#f4f4f5" />
+      <stop offset="100%" stop-color="#d4d4d8" />
+    </linearGradient>
+
+    <!-- Right Wing Gradient: Vivid Cyber Emerald -->
+    <linearGradient id="dark-right-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7" />
+      <stop offset="40%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Core Vertex Accent Gradient -->
+    <linearGradient id="dark-core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a7f3d0" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <!-- Ambient Emerald Glow Filter -->
+    <filter id="dark-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Drop Shadow for Dimensional Separation -->
+    <filter id="dark-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Focal Aura -->
+  <circle cx="32" cy="33" r="16" fill="#10b981" fill-opacity="0.14" filter="url(#dark-glow)" />
+
+  <!-- Left Stem of M: Ascending Pillar into Center Descent (Luminous White) -->
+  <path
+    d="M 10 52 
+       L 10 15 
+       C 10 13.3 11.3 12 13 12 
+       L 17 12 
+       C 18 12 19 12.6 19.6 13.4 
+       L 30.5 28 
+       L 30.5 40 
+       L 18.5 23.5 
+       L 18.5 52 
+       Z"
+    fill="url(#dark-left-grad)"
+    filter="url(#dark-shadow)"
+  />
+
+  <!-- Right Stem of M: Rising from Center Fold with 45° Cyber Terminal Cut (Emerald) -->
+  <path
+    d="M 33.5 28 
+       L 44.4 13.4 
+       C 45 12.6 46 12 47 12 
+       L 51 12 
+       C 52.7 12 54 13.3 54 15 
+       L 54 45.5 
+       L 47.5 52 
+       L 45.5 52 
+       L 45.5 23.5 
+       L 33.5 40 
+       Z"
+    fill="url(#dark-right-grad)"
+    filter="url(#dark-shadow)"
+  />
+
+  <!-- Central Emerald Terminal Pulse -->
+  <circle cx="32" cy="34" r="2.4" fill="url(#dark-core-grad)" filter="url(#dark-glow)" />
+</svg>

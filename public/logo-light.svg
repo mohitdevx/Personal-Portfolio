@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Left Wing Gradient: Deep Obsidian Charcoal -->
+    <linearGradient id="light-left-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#09090b" />
+      <stop offset="65%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#27272a" />
+    </linearGradient>
+
+    <!-- Right Wing Gradient: Rich Forest Emerald -->
+    <linearGradient id="light-right-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="40%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Core Vertex Accent Gradient -->
+    <linearGradient id="light-core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Subtle Drop Shadow for Crisp Separation on Light Backgrounds -->
+    <filter id="light-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+
+    <!-- Subtle Accent Glow -->
+    <filter id="light-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Subtle Emerald Aura on Light Background -->
+  <circle cx="32" cy="33" r="14" fill="#059669" fill-opacity="0.08" filter="url(#light-glow)" />
+
+  <!-- Left Stem of M: Ascending Pillar into Center Descent (Deep Charcoal) -->
+  <path
+    d="M 10 52 
+       L 10 15 
+       C 10 13.3 11.3 12 13 12 
+       L 17 12 
+       C 18 12 19 12.6 19.6 13.4 
+       L 30.5 28 
+       L 30.5 40 
+       L 18.5 23.5 
+       L 18.5 52 
+       Z"
+    fill="url(#light-left-grad)"
+    filter="url(#light-shadow)"
+  />
+
+  <!-- Right Stem of M: Rising from Center Fold with 45° Cyber Terminal Cut (Rich Emerald) -->
+  <path
+    d="M 33.5 28 
+       L 44.4 13.4 
+       C 45 12.6 46 12 47 12 
+       L 51 12 
+       C 52.7 12 54 13.3 54 15 
+       L 54 45.5 
+       L 47.5 52 
+       L 45.5 52 
+       L 45.5 23.5 
+       L 33.5 40 
+       Z"
+    fill="url(#light-right-grad)"
+    filter="url(#light-shadow)"
+  />
+
+  <!-- Central Emerald Terminal Pulse -->
+  <circle cx="32" cy="34" r="2.4" fill="url(#light-core-grad)" filter="url(#light-glow)" />
+</svg>
