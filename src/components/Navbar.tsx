@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 
 const Navbar = () => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : document.documentElement.classList.contains('dark');
+  });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -14,8 +18,60 @@ const Navbar = () => {
     }
   }, [isDark]);
 
-  const toggleTheme = () => {
-    setIsDark((prev) => !prev);
+  const toggleTheme = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    const nextIsDark = !isDark;
+
+    const applyThemeChange = () => {
+      setIsDark(nextIsDark);
+      if (nextIsDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      }
+    };
+
+    // Use View Transitions API if supported and user has not requested reduced motion
+    if (
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      const rect = e?.currentTarget.getBoundingClientRect();
+      const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+      const y = rect ? rect.top + rect.height / 2 : 0;
+      const endRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+
+      const transition = (document as unknown as {
+        startViewTransition: (cb: () => void) => { ready: Promise<void> };
+      }).startViewTransition(() => {
+        applyThemeChange();
+      });
+
+      transition.ready.then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 480,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+      });
+    } else {
+      applyThemeChange();
+    }
   };
 
   const navLinks = [
@@ -34,17 +90,25 @@ const Navbar = () => {
           }`}
       >
         <div className="flex items-center justify-between px-3 py-2 sm:px-4 sm:py-2">
-          {/* Logo */}
-
+          {/* Logo with smooth cross-fade transition */}
           <a
             href="#"
             aria-label="Home"
-            className="flex items-center outline-none group"
+            className="relative flex items-center justify-center w-5 h-5 outline-none group"
           >
             <img
-              src={isDark ? '/logo-dark.svg' : '/logo-light.svg'}
-              alt="mohitdevx logo"
-              className="w-5 h-5 transition-transform duration-200 group-hover:scale-105"
+              src="/logo-dark.svg"
+              alt="mohitdevx logo dark"
+              className={`absolute inset-0 w-5 h-5 transition-all duration-300 transform group-hover:scale-105 ${
+                isDark ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-90 -rotate-12 pointer-events-none'
+              }`}
+            />
+            <img
+              src="/logo-light.svg"
+              alt="mohitdevx logo light"
+              className={`absolute inset-0 w-5 h-5 transition-all duration-300 transform group-hover:scale-105 ${
+                !isDark ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-90 rotate-12 pointer-events-none'
+              }`}
             />
           </a>
 
@@ -66,7 +130,7 @@ const Navbar = () => {
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1.5">
-            {/* Theme Toggle Button */}
+            {/* Theme Toggle Button with morphing icon animation */}
             <button
               onClick={toggleTheme}
               type="button"
@@ -76,10 +140,22 @@ const Navbar = () => {
                 : 'bg-black/[0.04] text-light-muted hover:text-light-main hover:bg-black/[0.08] border border-black/[0.06]'
                 }`}
             >
-              <i
-                className={`text-sm transition-transform duration-300 hover:rotate-12 ${isDark ? 'ri-sun-line text-secondary' : 'ri-moon-line text-secondary'
+              <div className="relative w-4 h-4 flex items-center justify-center overflow-hidden">
+                <i
+                  className={`ri-sun-line text-sm text-secondary absolute transition-all duration-300 transform ${
+                    isDark
+                      ? 'opacity-100 rotate-0 scale-100'
+                      : 'opacity-0 -rotate-90 scale-50 pointer-events-none'
                   }`}
-              ></i>
+                />
+                <i
+                  className={`ri-moon-line text-sm text-secondary absolute transition-all duration-300 transform ${
+                    !isDark
+                      ? 'opacity-100 rotate-0 scale-100'
+                      : 'opacity-0 rotate-90 scale-50 pointer-events-none'
+                  }`}
+                />
+              </div>
             </button>
 
             {/* Mobile Hamburger Toggle */}

@@ -1,0 +1,42 @@
+# Settings for the [build] key are global and applied to all deploy contexts
+[build]
+  # Directory where the build system installs dependencies and runs your build
+  base = "project/frontend"
+  
+  # Directory that contains the deploy-ready HTML files and assets
+  publish = "dist"
+  
+  # Default build command
+  command = "npm run build"
+
+# Environment variables for specific contexts
+[context.production.environment]
+  NODE_VERSION = "18"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+
+# Redirects and headers are GLOBAL for all builds
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  # Redirect for Single Page Applications (SPA)
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover
+  for = "/*"
+  
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+
+# Optional: Configure Netlify Functions directory
+[functions]
+  directory = "netlify/functions"   

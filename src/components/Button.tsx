@@ -69,14 +69,16 @@ const Button = ({
   if ('href' in props && props.href) {
     const {
       href,
-      target = '_blank',
-      rel = 'noopener noreferrer',
+      download,
+      target = download ? undefined : '_blank',
+      rel = download ? undefined : 'noopener noreferrer',
       ...linkProps
     } = props as ButtonAsLink;
 
     return (
       <a
         href={href}
+        download={download}
         target={target}
         rel={rel}
         className={combinedClasses}

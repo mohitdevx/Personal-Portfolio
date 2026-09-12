@@ -49,8 +49,16 @@ const About = () => {
           </p>
         </div>
 
-        {/* Social Links */}
+        {/* Actions & Links */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
+          <Button
+            href="/Mohit_Kumar_Resume.docx"
+            download="Mohit_Kumar_Resume.docx"
+            icon="ri-download-2-line"
+            variant="secondary"
+          >
+            Download Resume
+          </Button>
           <Button
             href="https://github.com/mohitdevx"
             icon="ri-github-line"
