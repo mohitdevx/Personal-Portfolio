@@ -1,87 +1,130 @@
 ---
-title: 'The "What If I Just Change This Number?" Bug: The Anatomy of IDOR'
-subtitle: "Why authentication alone will not protect your database, and how a missing WHERE clause leaks millions of records."
+title: "Understanding IDOR: When Authentication Forgets Authorization"
+subtitle: "Authentication confirms who a user is. Authorization determines what they are allowed to access."
 date: "Oct 2026"
 readTime: "4 min read"
 tags: ["AppSec", "Backend", "Authorization"]
-summary: "IDOR is the simplest vulnerability on the internet, yet it causes massive real-world data leaks. Here is how developers accidentally create it, why UUIDs are a false safety net, and how to write bulletproof tenant-scoped queries."
+summary: "A practical look at IDOR using a team notes and messaging app, why authentication alone isn't enough, and how one missing condition in a database query exposes private records."
 ---
 
-### The Million-Dollar URL Parameter
+### A Common Scenario in a Team App
 
-Imagine checking your monthly internet invoice. The URL in your browser looks like this:
-`https://app.telecom.com/invoices/1042`
+Consider a shared workspace application where **Mohit**, **Money**, **Arsh**, and **Dev** collaborate on projects and keep private notes.
 
-Curious, you click the address bar, change `1042` to `1041`, and press Enter.
+When **Arsh** opens one of his private project notes, the frontend makes a request:
 
-If the site responds with *"Access Denied"*, congratulations: the engineering team did their job. But on thousands of real-world production web apps, you'll suddenly see John Doe's home address, phone number, and credit card statement.
-
-Welcome to **IDOR** (Insecure Direct Object Reference).
-
-If you ask any bug bounty hunter what single bug class pays their bills, 9 times out of 10 they will say IDOR or broken object-level authorization (BOLA). It is rarely found with automated scanners—it is a pure business logic flaw.
-
----
-
-### The Core Trap: Authentication vs. Authorization
-
-When engineers build an API endpoint at 2 AM, the brain naturally checks:
-> *"Is this user logged in?"*
-
-If yes, the request is allowed through. But the code forgets the second, indispensable question:
-> *"Does this authenticated user actually **own** or have permission to access **this specific record**?"*
-
-Here is what an innocent IDOR looks like in real Express / Prisma code:
-
-```typescript
-// ❌ The Classic IDOR Trap: Authentication without Authorization
-app.get('/api/invoices/:id', authenticateJWT, async (req, res) => {
-  const invoice = await db.invoice.findUnique({
-    where: { id: req.params.id }
-  });
-
-  if (!invoice) return res.status(404).send('Invoice not found');
-  res.json(invoice);
-});
+```http
+GET /api/notes/429
+Authorization: Bearer <arsh_jwt_token>
 ```
 
-Notice the danger: The user is fully authenticated with a valid JWT. But the database query simply looks up `req.params.id` in isolation. Any user can write a 5-line bash loop with `curl` and download every invoice in the company's history.
+The server returns Arsh's note. Everything works as intended.
+
+Now imagine **Money** logs into his own account. He opens one of his notes (`/api/notes/501`), but out of curiosity changes the request URL to:
+
+```http
+GET /api/notes/429
+Authorization: Bearer <money_jwt_token>
+```
+
+If the server returns Arsh's private note to Money, the application has an **Insecure Direct Object Reference (IDOR)**.
+
+The issue isn't that the ID is visible in the URL. The issue is that the backend checked whether Money was logged in, but never verified whether Money actually owned note `429`.
 
 ---
 
-### The "UUIDs Will Save Us" Myth
+### Authentication vs. Authorization
 
-A common counter-argument is: *"We don't use sequential integers like `1041`. We use random UUIDs like `550e8400-e29b-41d4-a716-446655440000`. Nobody can guess that!"*
-
-While UUIDs prevent casual enumeration, **security through obscurity is never authorization**:
-1. **UUIDs leak everywhere**: in referer headers, browser histories, share links, chat previews, and API responses.
-2. **Team collaboration leaks**: In collaborative tools, user A might legitimately see user B's workspace UUID. If user A sends a `DELETE /api/workspaces/:uuid`, your backend will execute it without verifying ownership.
-
----
-
-### The Clean Architecture Fix
-
-Fixing IDOR requires a mindset shift: **never fetch a resource solely by its primary key when the action is user-scoped**. Always tie the lookup directly to the authenticated session context.
+In many backend implementations, route handlers verify the user's session token and immediately fetch the requested record:
 
 ```typescript
-// ✅ The Bulletproof Fix: Multi-tenant ownership constraint
-app.get('/api/invoices/:id', authenticateJWT, async (req, res) => {
-  const invoice = await db.invoice.findFirst({
+// ❌ Problem: The route checks authentication, but skips ownership verification
+app.get('/api/notes/:id', authenticateUser, async (req, res) => {
+  const note = await db.note.findUnique({
     where: {
-      id: req.params.id,
-      userId: req.user.id // Enforce tenant boundary at the database level!
+      id: req.params.id
     }
   });
 
-  if (!invoice) {
-    // Return 404 rather than 403 to prevent object existence enumeration
-    return res.status(404).send('Invoice not found');
+  if (!note) {
+    return res.status(404).json({ error: 'Note not found' });
   }
 
-  res.json(invoice);
+  res.json(note);
 });
 ```
 
-#### Key Takeaways:
-- Treat `req.params` as untrusted user suggestions, not trusted IDs.
-- For multi-tenant or role-based apps, write policy middleware (or Prisma / ORM client extensions) that automatically inject tenant ownership into every `SELECT`, `UPDATE`, and `DELETE`.
-- Always return `404 Not Found` instead of `403 Forbidden` on unauthorized ID lookups to prevent attackers from discovering which IDs exist.
+Here, the middleware verifies that the incoming request has a valid token. However, the database query simply asks:
+
+> *"Find the note with ID 429."*
+
+It does not ask:
+
+> *"Find the note with ID 429 **that belongs to the logged-in user**."*
+
+Because of that missing constraint, any authenticated user (like Money or Dev) can view, edit, or delete notes belonging to Mohit or Arsh simply by iterating through IDs.
+
+---
+
+### Why UUIDs Don't Fix the Root Cause
+
+A common suggestion is to replace sequential numbers (`429`) with random UUIDs:
+
+`/api/notes/9f8b4d88-3751-419b-b0b2-299f018e6e87`
+
+While UUIDs make guessing difficult, they do not provide authorization:
+
+1. **IDs leak through normal usage**: in shared project links, browser history, network logs, and API payloads.
+2. **Targeted actions**: If Dev shares a draft with Money inside the workspace, Money now has the ID. If Money sends a `DELETE /api/notes/:uuid`, a vulnerable server will delete it without checking permissions.
+
+Hiding an ID makes it harder to discover, but the backend must still enforce who is permitted to access it.
+
+---
+
+### The Clean Solution: Scope Queries to the User
+
+The most reliable way to prevent IDOR is to enforce user or organization boundaries directly in the database query:
+
+```typescript
+// ✅ Fixed: Ownership is validated directly in the query
+app.get('/api/notes/:id', authenticateUser, async (req, res) => {
+  const note = await db.note.findFirst({
+    where: {
+      id: req.params.id,
+      userId: req.user.id // Enforce ownership at the query level
+    }
+  });
+
+  if (!note) {
+    // Return 404 so unauthorized users cannot enumerate existing IDs
+    return res.status(404).json({ error: 'Note not found' });
+  }
+
+  res.json(note);
+});
+```
+
+For collaborative resources (such as a project shared between Mohit and Arsh), check membership before returning data:
+
+```typescript
+const isMember = await db.projectMember.findFirst({
+  where: {
+    projectId: req.params.projectId,
+    userId: req.user.id
+  }
+});
+
+if (!isMember) {
+  return res.status(404).json({ error: 'Project not found' });
+}
+```
+
+---
+
+### Summary
+
+Whenever an endpoint handles user-scoped records by an identifier from `req.params` or `req.body`:
+
+1. **Verify the user's relationship with the resource**, not just their login status.
+2. **Include tenant or user constraints** in your database queries.
+3. **Return a 404 response** when an unauthorized resource is requested, preventing attackers from confirming which IDs exist on the server.
