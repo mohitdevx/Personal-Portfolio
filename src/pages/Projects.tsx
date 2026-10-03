@@ -14,33 +14,33 @@ const PROJECTS: Project[] = [
     title: 'LumiStream',
     year: '2026',
     summary:
-      'A real-time telemetry pipeline built to test how Redis pub/sub handles high write volumes without dropping messages. Uses Dockerized worker services to ingest and broadcast event streams with minimal latency.',
-    stack: ['TypeScript', 'Node.js', 'Redis', 'Docker'],
+      'A synchronized video streaming platform that lets users host rooms and watch content together in real time. Features automated multi-resolution HLS transcoding via FFmpeg, WebSocket-based playback sync, and live room chat.',
+    stack: ['TypeScript', 'React', 'Node.js', 'Socket.io', 'FFmpeg', 'PostgreSQL'],
     githubUrl: 'https://github.com/mohitdevx/lumistream',
   },
   {
-    title: 'SOC System',
+    title: 'EduClinic',
     year: '2026',
     summary:
-      'A security monitoring dashboard I built to track vulnerabilities across my own containerized environments. It aggregates CVE advisory feeds, monitors open network ports, and flags misconfigurations before deployment.',
-    stack: ['Python', 'React', 'Docker', 'PostgreSQL'],
-    githubUrl: 'https://github.com/mohitdevx/soc-system',
+      'A full-stack campus platform built for BFGI to connect students with alumni. Features a public directory, real-time messaging and discussion forums, event ticketing, and an admin moderation dashboard.',
+    stack: ['Next.js', 'React', 'Node.js', 'Socket.io', 'Prisma', 'PostgreSQL'],
+    githubUrl: 'https://github.com/alumniconnect4/educlinic',
   },
   {
     title: 'RAG Chatbot',
     year: '2026',
     summary:
-      'An experiment with retrieval-augmented generation to search and chat with local technical documentation. Focuses on data privacy, local vector embeddings, and token-based authentication on the API layer.',
-    stack: ['Python', 'FastAPI', 'React', 'MongoDB'],
+      'A fully offline retrieval-augmented generation chatbot to ingest and query custom documents with zero external API calls. Runs local Qwen-2.5 and BGE embeddings with Qdrant vector search, Redis caching, and SSE streaming.',
+    stack: ['Python', 'FastAPI', 'React', 'Qdrant', 'Redis', 'MongoDB'],
     githubUrl: 'https://github.com/mohitdevx/RAG-Chatbot',
   },
   {
-    title: 'API Rate Limiter & Gateway',
-    year: '2025',
+    title: 'VulScan',
+    year: '2026',
     summary:
-      'A lightweight reverse proxy written in Go to dive deeper into networking and rate-limiting algorithms. Implements a distributed token-bucket strategy with Redis to protect upstream endpoints from burst traffic.',
-    stack: ['Golang', 'Redis', 'Docker', 'Bash'],
-    githubUrl: 'https://github.com/mohitdevx',
+      'A static analysis (SAST) platform for JavaScript and TypeScript codebases. Combines Babel AST taint-flow analysis with local LLM triage to detect vulnerabilities, reduce false positives, and dispatch automated fix PRs.',
+    stack: ['TypeScript', 'React', 'Node.js', 'Babel AST', 'PostgreSQL', 'Redis'],
+    githubUrl: 'https://github.com/mohitdevx/vul-scan',
   },
 ];
 
