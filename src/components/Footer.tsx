@@ -1,5 +1,14 @@
-const Footer = () => {
+import React from 'react';
+import { RiArrowUpLine } from 'react-icons/ri';
+import { SOCIAL_LINKS } from '../data/portfolioData';
+
+const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="max-w-3xl mx-auto px-6 sm:px-8 pt-8 pb-16 font-poppins">
@@ -16,7 +25,7 @@ const Footer = () => {
         {/* Links and Scroll to Top */}
         <div className="flex items-center gap-4 sm:gap-5 text-xs">
           <a
-            href="https://github.com/mohitdevx"
+            href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-secondary transition-colors"
@@ -24,7 +33,7 @@ const Footer = () => {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/mohitdevx"
+            href={SOCIAL_LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-secondary transition-colors"
@@ -32,12 +41,13 @@ const Footer = () => {
             LinkedIn
           </a>
           <a
-            href="#"
-            className="inline-flex items-center gap-1 hover:text-secondary transition-colors"
+            href="#top"
+            onClick={scrollToTop}
+            className="inline-flex items-center gap-1 hover:text-secondary transition-colors cursor-pointer"
             aria-label="Scroll back to top"
           >
             <span>Top</span>
-            <i className="ri-arrow-up-line text-xs" />
+            <RiArrowUpLine className="text-xs" />
           </a>
         </div>
       </div>

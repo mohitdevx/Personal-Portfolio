@@ -2,8 +2,8 @@ import type { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from 'reac
 
 type BaseButtonProps = {
   children: ReactNode;
-  icon?: string;
-  endIcon?: string;
+  icon?: ReactNode;
+  endIcon?: ReactNode;
   variant?: 'outline' | 'ghost' | 'secondary';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -53,15 +53,15 @@ const Button = ({
   const content = (
     <>
       {icon && (
-        <i
-          className={`${icon} text-base transition-transform duration-200 group-hover:scale-110`}
-        />
+        <span className="flex items-center text-base transition-transform duration-200 group-hover:scale-110">
+          {icon}
+        </span>
       )}
       <span>{children}</span>
       {endIcon && (
-        <i
-          className={`${endIcon} text-xs text-light-muted dark:text-muted group-hover:text-light-main dark:group-hover:text-main transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`}
-        />
+        <span className="flex items-center text-xs text-light-muted dark:text-muted group-hover:text-light-main dark:group-hover:text-main transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+          {endIcon}
+        </span>
       )}
     </>
   );

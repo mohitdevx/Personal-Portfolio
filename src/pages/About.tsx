@@ -1,6 +1,14 @@
+import React from 'react';
 import Button from '../components/Button';
+import {
+  RiDownload2Line,
+  RiGithubLine,
+  RiLinkedinLine,
+  RiArrowRightUpLine,
+} from 'react-icons/ri';
+import { SOCIAL_LINKS } from '../data/portfolioData';
 
-const About = () => {
+const About: React.FC = () => {
   return (
     <section
       id="about"
@@ -52,24 +60,24 @@ const About = () => {
         {/* Actions & Links */}
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <Button
-            href="/Mohit_Kumar_Resume.docx"
+            href={SOCIAL_LINKS.resume}
             download="Mohit_Kumar_Resume.docx"
-            icon="ri-download-2-line"
+            icon={<RiDownload2Line className="text-base" />}
             variant="secondary"
           >
             Download Resume
           </Button>
           <Button
-            href="https://github.com/mohitdevx"
-            icon="ri-github-line"
-            endIcon="ri-arrow-right-up-line"
+            href={SOCIAL_LINKS.github}
+            icon={<RiGithubLine className="text-base" />}
+            endIcon={<RiArrowRightUpLine className="text-xs" />}
           >
             GitHub
           </Button>
           <Button
-            href="https://linkedin.com/in/mohitdevx"
-            icon="ri-linkedin-line"
-            endIcon="ri-arrow-right-up-line"
+            href={SOCIAL_LINKS.linkedin}
+            icon={<RiLinkedinLine className="text-base" />}
+            endIcon={<RiArrowRightUpLine className="text-xs" />}
           >
             LinkedIn
           </Button>

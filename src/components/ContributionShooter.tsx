@@ -1,26 +1,21 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import type { ContributionDay } from '../types';
 
-type ContributionDay = {
-  date: string;
-  count: number;
-  level: 0 | 1 | 2 | 3 | 4;
-};
-
-type Bullet = {
+interface Bullet {
   x: number;
   y: number;
   speed: number;
-};
+}
 
-type Particle = {
+interface Particle {
   x: number;
   y: number;
   vx: number;
   vy: number;
   alpha: number;
-};
+}
 
-type Props = {
+interface Props {
   weeks: ContributionDay[][];
   totalContributions: number;
   hoveredDay: ContributionDay | null;
@@ -29,9 +24,9 @@ type Props = {
   getLevelClass: (level: number) => string;
   getMonthLabel: (wIdx: number) => string | null;
   loading: boolean;
-};
+}
 
-const ContributionShooter = ({
+const ContributionShooter: React.FC<Props> = ({
   weeks,
   totalContributions,
   hoveredDay,
@@ -40,7 +35,7 @@ const ContributionShooter = ({
   getLevelClass,
   getMonthLabel,
   loading,
-}: Props) => {
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -52,28 +47,53 @@ const ContributionShooter = ({
   const lastShotRef = useRef(0);
 
   useEffect(() => {
-    let animId: number;
+    let animId: number | null = null;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    let isVisible = !document.hidden;
+
     const resizeCanvas = () => {
       if (canvas.parentElement) {
-        canvas.width = canvas.parentElement.scrollWidth || 670;
-        canvas.height = 118;
+        const dpr = window.devicePixelRatio || 1;
+        const width = canvas.parentElement.scrollWidth || 670;
+        const height = 118;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(dpr, dpr);
       }
     };
     resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible && !animId) {
+        animId = requestAnimationFrame(loop);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const loop = (timestamp: number) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!isVisible) {
+        animId = null;
+        return;
+      }
 
-      const shipY = canvas.height - 8;
+      const canvasWidth = canvas.parentElement?.scrollWidth || 670;
+      const canvasHeight = 118;
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const shipY = canvasHeight - 8;
 
       // Patrol movement
       shipXRef.current += dirRef.current * 1.5;
-      if (shipXRef.current > canvas.width - 30) {
+      if (shipXRef.current > canvasWidth - 30) {
         dirRef.current = -1;
       } else if (shipXRef.current < 30) {
         dirRef.current = 1;
@@ -185,7 +205,9 @@ const ContributionShooter = ({
     animId = requestAnimationFrame(loop);
 
     return () => {
-      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resizeCanvas);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (animId) cancelAnimationFrame(animId);
     };
   }, [weeks]);
 

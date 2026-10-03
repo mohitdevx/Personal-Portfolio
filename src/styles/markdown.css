@@ -1,0 +1,219 @@
+/* Clean, High-Craft Editorial Markdown Styles */
+.prose-custom {
+  color: var(--color-main);
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+html.light .prose-custom {
+  color: var(--color-light-main);
+}
+
+.prose-custom > *:first-child {
+  margin-top: 0;
+}
+
+.prose-custom p {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--color-muted);
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+html.light .prose-custom p {
+  color: var(--color-light-muted);
+}
+
+.prose-custom h1,
+.prose-custom h2,
+.prose-custom h3,
+.prose-custom h4 {
+  color: var(--color-main);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 6rem;
+}
+
+html.light .prose-custom h1,
+html.light .prose-custom h2,
+html.light .prose-custom h3,
+html.light .prose-custom h4 {
+  color: var(--color-light-main);
+}
+
+.prose-custom h2 {
+  font-size: 1.35rem;
+  margin-top: 2.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.prose-custom h3 {
+  font-size: 1.15rem;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-custom h4 {
+  font-size: 1rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: inherit;
+}
+
+.prose-custom a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(16, 185, 129, 0.4);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.prose-custom a:hover {
+  text-decoration-color: #10b981;
+  color: #10b981;
+}
+
+.prose-custom strong {
+  font-weight: 600;
+  color: var(--color-main);
+}
+
+html.light .prose-custom strong {
+  color: var(--color-light-main);
+}
+
+.prose-custom blockquote {
+  margin: 1.5rem 0;
+  padding: 0.5rem 0 0.5rem 1.25rem;
+  border-left: 2px solid rgba(16, 185, 129, 0.6);
+  color: var(--color-muted);
+  font-style: normal;
+}
+
+html.light .prose-custom blockquote {
+  color: var(--color-light-muted);
+  border-left-color: rgba(5, 150, 105, 0.6);
+}
+
+.prose-custom blockquote p {
+  margin: 0;
+}
+
+.prose-custom ul {
+  list-style-type: disc;
+  margin: 1.25rem 0;
+  padding-left: 1.25rem;
+  color: var(--color-muted);
+}
+
+html.light .prose-custom ul {
+  color: var(--color-light-muted);
+}
+
+.prose-custom ol {
+  list-style-type: decimal;
+  margin: 1.25rem 0;
+  padding-left: 1.25rem;
+  color: var(--color-muted);
+}
+
+html.light .prose-custom ol {
+  color: var(--color-light-muted);
+}
+
+.prose-custom li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.75;
+}
+
+.prose-custom li strong {
+  color: var(--color-main);
+}
+
+html.light .prose-custom li strong {
+  color: var(--color-light-main);
+}
+
+.prose-custom hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html.light .prose-custom hr {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Inline Code - Subtle and Refined */
+.prose-custom :not(pre) > code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.825em;
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html.light .prose-custom :not(pre) > code {
+  background: rgba(0, 0, 0, 0.04);
+  color: #18181b;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Syntax Highlighting Color Palette - Minimalist Dark Mode */
+.hljs {
+  color: #d4d4d8;
+  background: transparent;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section {
+  color: #c084fc; /* purple-400 */
+}
+
+.hljs-function,
+.hljs-title,
+.hljs-title.function_ {
+  color: #60a5fa; /* blue-400 */
+}
+
+.hljs-string,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+  color: #34d399; /* emerald-400 */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #71717a; /* zinc-500 */
+  font-style: italic;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-params {
+  color: #fbbf24; /* amber-400 */
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr {
+  color: #93c5fd; /* blue-300 */
+}
+
+.hljs-operator,
+.hljs-punctuation {
+  color: #a1a1aa; /* zinc-400 */
+}

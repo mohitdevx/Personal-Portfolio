@@ -1,30 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContributionShooter from '../components/ContributionShooter';
 import SectionHeader from '../components/SectionHeader';
+import { RiArrowRightUpLine, RiExternalLinkLine } from 'react-icons/ri';
+import { SOCIAL_LINKS } from '../data/portfolioData';
+import type { ContributionDay, GitHubEvent } from '../types';
 
-type ContributionDay = {
-  date: string;
-  count: number;
-  level: 0 | 1 | 2 | 3 | 4;
-};
-
-type GitHubEvent = {
-  id: string;
-  type: string;
-  repo: {
-    name: string;
-    url: string;
-  };
-  created_at: string;
-  payload: {
-    commits?: Array<{ message: string; sha: string }>;
-    ref?: string;
-    ref_type?: string;
-    action?: string;
-  };
-};
-
-const Contributions = () => {
+const Contributions: React.FC = () => {
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [totalContributions, setTotalContributions] = useState<number>(119);
   const [events, setEvents] = useState<GitHubEvent[]>([]);
@@ -33,11 +14,13 @@ const Contributions = () => {
 
   useEffect(() => {
     let isMounted = true;
+    const abortController = new AbortController();
 
     const fetchGitHubData = async () => {
       try {
         const contribRes = await fetch(
-          'https://github-contributions-api.jogruber.de/v4/mohitdevx?y=last'
+          'https://github-contributions-api.jogruber.de/v4/mohitdevx?y=last',
+          { signal: abortController.signal }
         );
         if (contribRes.ok) {
           const contribData = await contribRes.json();
@@ -49,12 +32,15 @@ const Contributions = () => {
           }
         }
       } catch (err) {
-        console.warn('Failed to load GitHub contribution graph:', err);
+        if ((err as Error).name !== 'AbortError') {
+          console.warn('Failed to load GitHub contribution graph:', err);
+        }
       }
 
       try {
         const eventsRes = await fetch(
-          'https://api.github.com/users/mohitdevx/events?per_page=6'
+          'https://api.github.com/users/mohitdevx/events?per_page=6',
+          { signal: abortController.signal }
         );
         if (eventsRes.ok) {
           const eventsData = await eventsRes.json();
@@ -63,7 +49,9 @@ const Contributions = () => {
           }
         }
       } catch (err) {
-        console.warn('Failed to load GitHub events:', err);
+        if ((err as Error).name !== 'AbortError') {
+          console.warn('Failed to load GitHub events:', err);
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -73,6 +61,7 @@ const Contributions = () => {
 
     return () => {
       isMounted = false;
+      abortController.abort();
     };
   }, []);
 
@@ -212,13 +201,13 @@ const Contributions = () => {
         description="Live telemetry and open source commits synced directly with GitHub."
         action={
           <a
-            href="https://github.com/mohitdevx"
+            href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-light-muted dark:text-muted hover:text-secondary flex items-center gap-1 transition-colors"
           >
             <span>github.com/mohitdevx</span>
-            <i className="ri-arrow-right-up-line text-[10px]" />
+            <RiArrowRightUpLine className="text-[11px]" />
           </a>
         }
       />
@@ -280,7 +269,7 @@ const Contributions = () => {
                         className="hover:text-secondary transition-colors p-1"
                         aria-label="View on GitHub"
                       >
-                        <i className="ri-external-link-line text-xs" />
+                        <RiExternalLinkLine className="text-xs" />
                       </a>
                     </div>
                   </div>

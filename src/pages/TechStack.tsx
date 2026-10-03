@@ -1,58 +1,8 @@
-import type { IconType } from 'react-icons';
+import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import {
-  SiPython,
-  SiCplusplus,
-  SiJavascript,
-  SiTypescript,
-  SiGnubash,
-  SiGo,
-  SiPostgresql,
-  SiMongodb,
-  SiRedis,
-  SiDocker,
-  SiLinux,
-  SiTailwindcss,
-  SiReact,
-  SiNodedotjs,
-  SiPrisma,
-  SiGithub,
-  SiPostman,
-  SiMysql,
-} from 'react-icons/si';
-import { VscVscode } from 'react-icons/vsc';
+import { TECH_STACK_ROW_ONE, TECH_STACK_ROW_TWO } from '../data/portfolioData';
 
-type TechItem = {
-  name: string;
-  Icon: IconType;
-};
-
-const ROW_ONE: TechItem[] = [
-  { name: 'Python', Icon: SiPython },
-  { name: 'React', Icon: SiReact },
-  { name: 'TypeScript', Icon: SiTypescript },
-  { name: 'Docker', Icon: SiDocker },
-  { name: 'PostgreSQL', Icon: SiPostgresql },
-  { name: 'C++', Icon: SiCplusplus },
-  { name: 'Node.js', Icon: SiNodedotjs },
-  { name: 'Redis', Icon: SiRedis },
-  { name: 'Linux (Debian / Arch)', Icon: SiLinux },
-  { name: 'Postman', Icon: SiPostman },
-];
-
-const ROW_TWO: TechItem[] = [
-  { name: 'Golang', Icon: SiGo },
-  { name: 'Tailwind CSS', Icon: SiTailwindcss },
-  { name: 'JavaScript', Icon: SiJavascript },
-  { name: 'MongoDB', Icon: SiMongodb },
-  { name: 'Prisma', Icon: SiPrisma },
-  { name: 'Git & GitHub', Icon: SiGithub },
-  { name: 'Bash', Icon: SiGnubash },
-  { name: 'VS Code', Icon: VscVscode },
-  { name: 'MySQL', Icon: SiMysql },
-];
-
-const TechStack = () => {
+const TechStack: React.FC = () => {
   return (
     <section
       id="tech-stack"
@@ -69,7 +19,7 @@ const TechStack = () => {
       <div className="overflow-hidden mask-fade-x space-y-2.5 py-1">
         {/* Row 1 - Left Marquee */}
         <div className="animate-marquee-left flex gap-2.5">
-          {[...ROW_ONE, ...ROW_ONE].map((tech, idx) => (
+          {[...TECH_STACK_ROW_ONE, ...TECH_STACK_ROW_ONE].map((tech, idx) => (
             <div
               key={`row1-${tech.name}-${idx}`}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] hover:border-secondary/40 text-xs sm:text-sm font-medium text-light-main dark:text-main transition-colors select-none flex-shrink-0 cursor-default"
@@ -82,7 +32,7 @@ const TechStack = () => {
 
         {/* Row 2 - Right Marquee */}
         <div className="animate-marquee-right flex gap-2.5">
-          {[...ROW_TWO, ...ROW_TWO].map((tech, idx) => (
+          {[...TECH_STACK_ROW_TWO, ...TECH_STACK_ROW_TWO].map((tech, idx) => (
             <div
               key={`row2-${tech.name}-${idx}`}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] hover:border-secondary/40 text-xs sm:text-sm font-medium text-light-main dark:text-main transition-colors select-none flex-shrink-0 cursor-default"
