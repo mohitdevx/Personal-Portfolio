@@ -56,7 +56,7 @@ const BlogList: React.FC = () => {
                   ))}
                 </div>
 
-                <span className="inline-flex items-center gap-1 text-xs text-secondary font-medium group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center gap-1 text-xs text-light-muted dark:text-muted group-hover:text-secondary font-medium group-hover:translate-x-0.5 transition-all">
                   <span>Read full post</span>
                   <RiArrowRightLine className="text-xs" />
                 </span>

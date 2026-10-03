@@ -6,11 +6,11 @@ import rehypeHighlight from 'rehype-highlight';
 import { getBlogPostBySlug } from '../data/blogLoader';
 import {
   RiArrowLeftLine,
-  RiFileCopyLine,
+  RiClipboardLine,
   RiCheckLine,
 } from 'react-icons/ri';
 
-// Custom Pre/Code Block: Single clean surface with copy button & language label
+// Sleek, Minimal Code Block Component
 const CustomPre: React.FC<React.HTMLAttributes<HTMLPreElement>> = ({
   children,
   ...props
@@ -45,41 +45,45 @@ const CustomPre: React.FC<React.HTMLAttributes<HTMLPreElement>> = ({
         setTimeout(() => setCopied(false), 2000);
       }
     } catch {
-      // ignore clipboard error
+      // ignore
     }
   };
 
   return (
-    <div className="relative my-6 rounded-xl border border-black/[0.08] dark:border-white/[0.08] bg-[#0c0c0f] overflow-hidden">
-      {/* Code Header Bar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-white/[0.06] bg-white/[0.02] text-xs font-mono text-zinc-400 select-none">
-        <span className="text-[11px] lowercase tracking-wide text-zinc-400">
+    <div className="relative group/code my-6 rounded-xl border border-black/[0.08] dark:border-white/[0.07] bg-black/[0.025] dark:bg-[#09090b] overflow-hidden">
+      {/* Sleek Top Bar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-black/[0.04] dark:border-white/[0.04] bg-black/[0.015] dark:bg-white/[0.01] text-xs font-mono select-none">
+        <span className="text-[11px] font-mono text-light-muted dark:text-muted">
           {language || 'code'}
         </span>
         <button
           onClick={handleCopy}
           type="button"
-          aria-label="Copy code to clipboard"
-          className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+          aria-label={copied ? "Copied" : "Copy code"}
+          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-mono transition-all cursor-pointer ${
+            copied
+              ? 'text-secondary bg-secondary/10'
+              : 'text-light-muted dark:text-muted hover:text-light-main dark:hover:text-main hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+          }`}
         >
           {copied ? (
             <>
-              <RiCheckLine className="text-secondary text-xs" />
-              <span className="text-secondary">copied</span>
+              <RiCheckLine className="text-xs text-secondary" />
+              <span className="text-[10px] text-secondary">Copied</span>
             </>
           ) : (
             <>
-              <RiFileCopyLine className="text-xs" />
-              <span>copy</span>
+              <RiClipboardLine className="text-xs" />
+              <span className="text-[10px]">Copy</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Actual Pre/Code Body - Single seamless background */}
+      {/* Code Area with smooth horizontal scrolling & hidden scrollbar */}
       <pre
         {...props}
-        className="!m-0 !p-4 !bg-transparent !border-none !rounded-none overflow-x-auto text-[13px] font-mono leading-relaxed text-zinc-200"
+        className="!m-0 !p-4 sm:!p-5 !bg-transparent !border-none !rounded-none overflow-x-auto no-scrollbar text-[13px] sm:text-[13.5px] font-mono leading-relaxed"
       >
         {children}
       </pre>
@@ -101,7 +105,7 @@ const BlogPostPage: React.FC = () => {
 
   if (!post) {
     return (
-      <div className="max-w-2xl mx-auto px-6 sm:px-8 pt-36 pb-20 font-poppins text-center">
+      <div className="max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-20 font-poppins text-center">
         <h1 className="text-xl font-semibold text-light-main dark:text-main mb-2">
           Post Not Found
         </h1>
@@ -120,8 +124,8 @@ const BlogPostPage: React.FC = () => {
   }
 
   return (
-    <article className="max-w-2xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-24 font-poppins animate-in fade-in duration-300">
-      {/* Minimal Top Back Link */}
+    <article className="max-w-3xl mx-auto px-6 sm:px-8 pt-32 sm:pt-40 pb-24 font-poppins animate-in fade-in duration-300">
+      {/* Top Back Link */}
       <div className="mb-8">
         <Link
           to="/blog"
@@ -174,7 +178,7 @@ const BlogPostPage: React.FC = () => {
         </ReactMarkdown>
       </div>
 
-      {/* Minimal Bottom Footer Navigation */}
+      {/* Bottom Footer Navigation */}
       <div className="mt-16 pt-8 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
         <button
           onClick={() => navigate('/blog')}

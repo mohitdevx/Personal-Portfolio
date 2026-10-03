@@ -163,10 +163,14 @@ html.light .prose-custom :not(pre) > code {
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Syntax Highlighting Color Palette - Minimalist Dark Mode */
+/* Syntax Highlighting Color Palette - Minimalist Dark & Light Modes */
 .hljs {
   color: #d4d4d8;
   background: transparent;
+}
+
+html.light .hljs {
+  color: #27272a;
 }
 
 .hljs-keyword,
@@ -176,10 +180,23 @@ html.light .prose-custom :not(pre) > code {
   color: #c084fc; /* purple-400 */
 }
 
+html.light .hljs-keyword,
+html.light .hljs-selector-tag,
+html.light .hljs-literal,
+html.light .hljs-section {
+  color: #9333ea;
+}
+
 .hljs-function,
 .hljs-title,
 .hljs-title.function_ {
   color: #60a5fa; /* blue-400 */
+}
+
+html.light .hljs-function,
+html.light .hljs-title,
+html.light .hljs-title.function_ {
+  color: #2563eb;
 }
 
 .hljs-string,
@@ -188,6 +205,14 @@ html.light .prose-custom :not(pre) > code {
 .hljs-bullet,
 .hljs-addition {
   color: #34d399; /* emerald-400 */
+}
+
+html.light .hljs-string,
+html.light .hljs-attribute,
+html.light .hljs-symbol,
+html.light .hljs-bullet,
+html.light .hljs-addition {
+  color: #059669;
 }
 
 .hljs-comment,
@@ -207,13 +232,33 @@ html.light .prose-custom :not(pre) > code {
   color: #fbbf24; /* amber-400 */
 }
 
+html.light .hljs-number,
+html.light .hljs-regexp,
+html.light .hljs-type,
+html.light .hljs-built_in,
+html.light .hljs-builtin-name,
+html.light .hljs-params {
+  color: #d97706;
+}
+
 .hljs-variable,
 .hljs-template-variable,
 .hljs-attr {
   color: #93c5fd; /* blue-300 */
 }
 
+html.light .hljs-variable,
+html.light .hljs-template-variable,
+html.light .hljs-attr {
+  color: #1d4ed8;
+}
+
 .hljs-operator,
 .hljs-punctuation {
   color: #a1a1aa; /* zinc-400 */
+}
+
+html.light .hljs-operator,
+html.light .hljs-punctuation {
+  color: #52525b;
 }
